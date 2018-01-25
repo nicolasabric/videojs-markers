@@ -11,8 +11,8 @@
     global.videojsMarkers = mod.exports;
   }
 })(this, function (_video) {
-  /*! videojs-markers - v0.9.0 - 2017-12-13
-  * Copyright (c) 2017 ; Licensed  */
+  /*! videojs-markers - v1.0.0 - 2018-01-25
+  * Copyright (c) 2018 ; Licensed  */
   'use strict';
 
   var _video2 = _interopRequireDefault(_video);
@@ -298,7 +298,23 @@
           markerTip.style.left = getPosition(marker) + '%';
           var markerTipBounding = getElementBounding(markerTip);
           var markerDivBounding = getElementBounding(markerDiv);
-          markerTip.style.marginLeft = -parseFloat(markerTipBounding.width / 2) + parseFloat(markerDivBounding.width / 4) + 'px';
+          var playerBounding = getElementBounding(player.el());
+
+          var anchor = markerDivBounding.x + markerDivBounding.width / 2;
+          var halfTip = parseFloat(markerTipBounding.width / 2);
+          var quarterMarker = parseFloat(markerDivBounding.width / 4);
+          var marginLeft = 0;
+          markerTip.className = 'vjs-tip aligned-right';
+          if (anchor - halfTip > playerBounding.x) {
+            markerTip.className = 'vjs-tip';
+            marginLeft = -parseFloat(markerTipBounding.width / 2) + quarterMarker;
+          }
+          if (anchor + halfTip > playerBounding.x + playerBounding.width) {
+            markerTip.className = 'vjs-tip aligned-left';
+            marginLeft = -markerTipBounding.width + parseFloat(markerDivBounding.width / 2);
+          }
+
+          markerTip.style.marginLeft = marginLeft + 'px';
           markerTip.style.visibility = 'visible';
         }
       });

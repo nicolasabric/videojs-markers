@@ -534,3 +534,5 @@ ENV/
 
 # Spyder project settings
 .spyderproject
+
+package-lock.json

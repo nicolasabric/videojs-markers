@@ -287,8 +287,23 @@ function registerVideoJsMarkersPlugin(options) {
         markerTip.style.left = getPosition(marker) + '%';
         var markerTipBounding = getElementBounding(markerTip);
         var markerDivBounding = getElementBounding(markerDiv);
-        markerTip.style.marginLeft = 
-          -parseFloat(markerTipBounding.width / 2) + parseFloat(markerDivBounding.width / 4) + 'px';
+        var playerBounding = getElementBounding(player.el());
+
+        var anchor = markerDivBounding.x + markerDivBounding.width / 2;
+        var halfTip = parseFloat(markerTipBounding.width / 2);
+        var quarterMarker = parseFloat(markerDivBounding.width / 4)
+        var marginLeft = 0;
+        markerTip.className = 'vjs-tip aligned-right';
+        if (anchor - halfTip > playerBounding.x) {
+          markerTip.className = 'vjs-tip';
+          marginLeft = -parseFloat(markerTipBounding.width / 2) + quarterMarker;
+        }
+        if (anchor + halfTip > playerBounding.x + playerBounding.width) {
+          markerTip.className = 'vjs-tip aligned-left';
+          marginLeft = -markerTipBounding.width + parseFloat(markerDivBounding.width / 2)
+        }
+      
+        markerTip.style.marginLeft = marginLeft + 'px';
         markerTip.style.visibility = 'visible';
       }
     });
